@@ -1,0 +1,48 @@
+# Node.js and Front-end dependencies
+node_modules/
+dist/
+build/
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+*.vscode/
+*.idea/
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Compiled files
+*.class
+*.pyc
+*.o
+*.out
+
+# Misc
+*.lock
+*.log
+*.cache
+
+# Specific project files
+Back-end/node_modules/
+Frent-end/node_modules/
+
+# Ignore specific file types
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
