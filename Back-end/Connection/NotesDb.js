@@ -1,7 +1,7 @@
 const mongoose=require("mongoose")
 const ConnectDB=async()=>{
     try {
-            await mongoose.connect("mongodb://localhost/NotesDb")
+            await mongoose.connect(process.env.MONGO_URL)
             console.log("connect to MongoDb was seccessful.")
                 
             } catch (error) {
