@@ -91,18 +91,17 @@ Router.post("/add-note", authentificationToken, asyncHandler(async (req, res) =>
 // Get notes
 Router.get("/get-notes", authentificationToken, asyncHandler(async (req, res) => {
     const user = req.user;
-    const notes = await Notes.find({ userId: user.id });
+    const notes = await Notes.find({ userId: user.id }).sort({ isPinned: -1 });
     res.status(200).json({
         error: false,
         notes
     });
 }));
-
 // Update note
 Router.put("/update-note/:id", authentificationToken, asyncHandler(async (req, res) => {
     const user = req.user;
     const noteId = req.params.id;
-    const { title, content, tags } = req.body;
+    const { title, content, tags, isPinned } = req.body;
     if (!title) {
         return res.status(400).json({ error: true, message: "Title is required" });
     }
@@ -111,7 +110,7 @@ Router.put("/update-note/:id", authentificationToken, asyncHandler(async (req, r
     }
     const note = await Notes.findOneAndUpdate(
         { _id: noteId, userId: user.id },
-        { title, content, tags: tags || [] },
+        { title, content, tags: tags || [], isPinned },
         { new: true }
     );
     if (!note) {
@@ -135,6 +134,29 @@ Router.delete("/delete-note/:id", authentificationToken, asyncHandler(async (req
     res.status(200).json({
         error: false,
         message: "Note deleted successfully"
+    });
+}));
+
+// Update note pinned status
+Router.put("/update-note-pinned/:id", authentificationToken, asyncHandler(async (req, res) => {
+    const user = req.user;
+    const noteId = req.params.id;
+    const { isPinned } = req.body;
+
+    const note = await Notes.findOneAndUpdate(
+        { _id: noteId, userId: user.id },
+        { isPinned },
+        { new: true }
+    );
+
+    if (!note) {
+        return res.status(400).json({ error: true, message: "Note not found" });
+    }
+
+    res.status(200).json({
+        error: false,
+        note,
+        message: "Note pinned status updated successfully"
     });
 }));
 
