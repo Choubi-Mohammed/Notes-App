@@ -27,29 +27,29 @@ const Signup = () => {
     }
     seterrur("")
     // hna Api register
-    try {
-      const response = await fetch('http://localhost:3000/api/notes/register/', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              name: name, 
-              email: email, 
-              password: pass,
-              isAdmin: false, 
-          }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-          console.log("Registration successful:", data);
-          window.location.href = '/login'; 
-      } else {
-          console.error("Registration error:", data.message);
-      }
-  } catch (err) {
-      console.error("An error occurred:", err);
-  }
+  //   try {
+  //     const response = await fetch('http://localhost:3000/api/notes/register/', {
+  //         method: 'POST',
+  //         headers: {
+  //             'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({
+  //             name: name, 
+  //             email: email, 
+  //             password: pass,
+  //             isAdmin: false, 
+  //         }),
+  //     });
+  //     const data = await response.json();
+  //     if (response.ok) {
+  //         console.log("Registration successful:", data);
+  //         window.location.href = '/login'; 
+  //     } else {
+  //         console.error("Registration error:", data.message);
+  //     }
+  // } catch (err) {
+  //     console.error("An error occurred:", err);
+  // }
   
   }
   return (

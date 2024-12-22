@@ -25,27 +25,27 @@ const Login = () => {
         }
         seterrur("")
         // login api call
-        try {
-          const response = await fetch('http://localhost:3000/api/notes/login/', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  email: email, 
-                  password: pass,
-              }),
-          });
-          const data = await response.json();
-          if (response.ok) {
-              console.log("Login successful:", data);
-              window.location.href = '/dashbord'; 
-          } else {
-              console.error("Login error:", data.message);
-          }
-      } catch (err) {
-          console.error("An error occurred:", err);
-      }
+    //     try {
+    //       const response = await fetch('http://localhost:3000/api/notes/login/', {
+    //           method: 'POST',
+    //           headers: {
+    //               'Content-Type': 'application/json',
+    //           },
+    //           body: JSON.stringify({
+    //               email: email, 
+    //               password: pass,
+    //           }),
+    //       });
+    //       const data = await response.json();
+    //       if (response.ok) {
+    //           console.log("Login successful:", data);
+    //           window.location.href = '/dashbord'; 
+    //       } else {
+    //           console.error("Login error:", data.message);
+    //       }
+    //   } catch (err) {
+    //       console.error("An error occurred:", err);
+    //   }
     }
   return (
     <>
