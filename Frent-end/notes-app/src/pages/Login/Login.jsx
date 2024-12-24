@@ -1,79 +1,81 @@
-// import React from "react"
-import { Link } from "react-router-dom"
-
-import Navbar from "../../compenent/Navbar/Navbar"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../../compenent/Navbar/Navbar";
 import PassInput from "../../compenent/PassInput/PassInput"
-import { useState } from "react"
-import { validateEmail } from "../../utils/Helper"
-
+import { validateEmail } from "../../utils/Helper";
+import AxiosInstance from "../../utils/AxiosInstance";
 
 const Login = () => {
-    const [email,setemail]=useState("")
-    const [pass,setpass]=useState("")
-    const [errur,seterrur]=useState(null)
-    const handleLogin = async(event)=>{
-        event.preventDefault()
+    const [email, setEmail] = useState("");
+    const [pass, setPass] = useState("");
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-        if (!validateEmail(email)){
-            seterrur("please entrer a valide email adress.")
+    const handleLogin = async (event) => {
+        event.preventDefault();
+
+        if (!validateEmail(email)) {
+            setError("Please enter a valid email address.");
             return;
         }
-        if(!pass){
-          seterrur("please entrer the passwod")
-          return;
-
+        if (!pass) {
+            setError("Please enter the password.");
+            return;
         }
-        seterrur("")
+        setError("");
+
         // login api call
         try {
-          const response = await fetch('http://localhost:3000/api/notes/login/', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  email: email, 
-                  password: pass,
-              }),
-          });
-          const data = await response.json();
-          if (response.ok) {
-              console.log("Login successful:", data);
-              window.location.href = '/dashbord'; 
-          } else {
-              console.error("Login error:", data.message);
-          }
-      } catch (err) {
-          console.error("An error occurred:", err);
-      }
-    }
-  return (
-    <>
-      <Navbar/>
-      <div className="flex items-center justify-center mt-28  ">
-        <div className="w-96 border rounded bg-white px-7 py-10">
-            <form onSubmit={handleLogin}>
-                <h1 className="text-2xl text-center mb-7">Login</h1>
-                <input type="email" placeholder="Email" className="input-box"
-                value={email}
-                onChange={(e)=>setemail(e.target.value)}
-                />
-                {/* <PassInput value={pass} onChange={(e)=>setpass(e.target.value)}/> */}
-                <PassInput value={pass} onChange={(e)=>setpass(e.target.value)} placeHolder="Password"/>
-                {errur && <p className="text-red-500 text-sx pb-1">{errur}</p>}
-                <button className="btn-primary" type="submit">
-                    Login
-                </button>
-                <p className=" text-sm text-center mt-4">
-                    Not Registred Yet ? {" "}
-                <Link to="/signup" className="font-medium text-primary underline">Create an account</Link>
-                </p>
-            </form>
-        </div>
-      </div>
+            const response = await AxiosInstance.post("/login/", {
+                email: email,
+                password: pass,
+            });
+            if (response.data && response.data.accessToken) {
+                navigate("/dashbord");
+            }
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+                setError(error.response.data.message);
+            } else {
+                setError("An unexpected error occurred. Please try again later.");
+            }
+        }
+    };
 
-    </>
-  )
-}
+    return (
+        <>
+            <Navbar />
+            <div className="flex items-center justify-center mt-28">
+                <div className="w-96 border rounded bg-white px-7 py-10">
+                    <form onSubmit={handleLogin}>
+                        <h1 className="text-2xl text-center mb-7">Login</h1>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="input-box"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <PassInput
+                            value={pass}
+                            onChange={(e) => setPass(e.target.value)}
+                            placeHolder="Password"
+                        />
+                        {error && <p className="text-red-500 text-sx pb-1">{error}</p>}
+                        <button className="btn-primary" type="submit">
+                            Login
+                        </button>
+                        <p className="text-sm text-center mt-4">
+                            Not Registered Yet?{" "}
+                            <Link to="/signup" className="font-medium text-primary underline">
+                                Create an account
+                            </Link>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </>
+    );
+};
 
-export default Login
+export default Login;

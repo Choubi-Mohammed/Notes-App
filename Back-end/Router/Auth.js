@@ -97,6 +97,20 @@ Router.get("/get-notes", authentificationToken, asyncHandler(async (req, res) =>
         notes
     });
 }));
+
+// Get user details
+Router.get("/user", authentificationToken, asyncHandler(async (req, res) => {
+    const user = req.user;
+    const userDetails = await NotesUsers.findById(user.id).select("-password");
+    if (!userDetails) {
+        return res.status(404).json({ error: true, message: "User not found" });
+    }
+    res.status(200).json({
+        error: false,
+        user: userDetails
+    });
+}));
+
 // Update note
 Router.put("/update-note/:id", authentificationToken, asyncHandler(async (req, res) => {
     const user = req.user;

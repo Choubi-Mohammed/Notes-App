@@ -15,6 +15,5 @@ App.use(express.json())
 ConnectDB();
 
 App.use("/api/notes/",RouterPath)
-
 const PORT=3000;
 App.listen(PORT,()=>console.log(`Server is Runing in Port ${PORT}`))
